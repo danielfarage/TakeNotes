@@ -1,4 +1,4 @@
-package com.daniel.farage.takenotes
+package com.daniel.farage.takenotes.feature_notes.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
