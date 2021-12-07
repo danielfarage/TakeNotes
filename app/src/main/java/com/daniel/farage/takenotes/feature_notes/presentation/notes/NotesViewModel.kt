@@ -49,8 +49,8 @@ class NotesViewModel @Inject constructor(
                 recentlyDeletedNote = null
             }
             is NotesEvent.ToggleOrderSection -> {
-                _state.value.copy(
-                    isOrderSectionVisible = !_state.value.isOrderSectionVisible
+                _state.value = _state.value.copy(
+                    isOrderSectionVisible = !state.value.isOrderSectionVisible
                 )
             }
         }
@@ -60,8 +60,8 @@ class NotesViewModel @Inject constructor(
         getNotesJob?.cancel()
         getNotesJob = notesUseCases.getNotes(noteOrder)
             .onEach { notes ->
-            _state.value.copy(notes = notes, noteOrder = noteOrder)
-        }.launchIn(viewModelScope)
+                _state.value = _state.value.copy(notes = notes, noteOrder = noteOrder)
+            }.launchIn(viewModelScope)
     }
 
 }

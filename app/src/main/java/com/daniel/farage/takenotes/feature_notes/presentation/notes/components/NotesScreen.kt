@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.daniel.farage.takenotes.feature_notes.presentation.notes.NotesEvent
 import com.daniel.farage.takenotes.feature_notes.presentation.notes.NotesViewModel
+import com.daniel.farage.takenotes.feature_notes.presentation.util.Screen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -31,9 +32,17 @@ fun NotesScreen(
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                backgroundColor = MaterialTheme.colors.primaryVariant,
+                title = { Text("Notas", color = MaterialTheme.colors.primary) },
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(Screen.AddEditScreen.route)
+                },
                 backgroundColor = MaterialTheme.colors.primary
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Adicionar nota")
@@ -86,7 +95,11 @@ fun NotesScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-
+                                navController.navigate(
+                                    Screen.AddEditScreen.route +
+                                            "?noteId=${note.id}" +
+                                            "&noteColor=${note.color}"
+                                )
                             },
                         onDeleteClick = {
                             viewModel.onEvent(NotesEvent.DeleteNote(note))
@@ -95,7 +108,7 @@ fun NotesScreen(
                                     message = "Note apagada",
                                     actionLabel = "Desfazer",
 
-                                )
+                                    )
                                 if (result == SnackbarResult.ActionPerformed) {
                                     viewModel.onEvent(NotesEvent.RestoreNote)
                                 }
